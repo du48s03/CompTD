@@ -1,3 +1,11 @@
+Library/*
+Temp/*
+*.userprefs
+*.sln
+*.unityproj
+*.pidb
+*.csproj
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
