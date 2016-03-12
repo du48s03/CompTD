@@ -1,0 +1,55 @@
+User cases:
+
+Map:
+1. When the user drags the map, the camera should move accordingly
+2. if the player touches the map without dragging, the focus is set to null
+
+Spawn Point:
+1. spawn point is only shown to its owner. 
+2. when the user touches the spawn point, his focus should be changed to it
+3. when it gains the focus, a menu should show up. 
+4. when the spawn point loses the player's focus, the menu should disappear. 
+
+
+Spawn Menu:
+1. when the user touches one of the buttons, it should enter the "target selection mode": when touching an empty building point or the enemy base, a minion of the chosen type is spawned with the chosen target, then the spawning point loses focus. 
+2. when the user touches the cancel button, the spawn point loses focus. 
+
+building point:
+1. when the user touches a building point, the player's focus should be changed to it. 
+2. when the building point gains focus, if it is controlled by the player, a menu should show up. 
+3. when the building point loses focus, the menu is hidden. 
+4. if the player's focus is on a building point, it should show its stats(the influence)
+
+Building Point Menu:
+1. when the player touches one of the buttons, a building of the the chosen type is spawned at the point, and the building point loses focus. 
+2. when the player touches the cancel button, the buliding point loses focus. 
+
+Minions:
+1. when the player touches a minion, it gains focus. 
+2. if the player's focus is on a minion, it should show its stats(HP)
+3. when a minion enters an uncontrolled building point, decrease the enemy influence on it by 1 or increase the influence of the owner of the minion by one if the building point has not enemy influence on it 
+4. when a minion enters the enemy base, decrease the enemy base life by 1. 
+5. when a minion's life goes to 0, it is destroyed, but will be respawned at it's spawning point after a certain amount of time. 
+
+Base:
+1. when the player touches it, it gains focus. 
+2. if the player's focus is on it, it should show its stats(HP)
+
+
+Building:
+different buildings do different things. These will be defined in the future. 
+
+
+
+interfaces:
+abstract interface Focusable:
+    -implemented by all the focasable objects
+    methods:
+        abstract void OnGainFocus()
+        abstract void OnLoseFocus()
+
+abstract interface Targetable:
+    -an interface implemented by the base and the building points
+    methods:
+        abstract bool IsTargetable(var player): returns true if this object is an enemy base or an uncontrolled building point. Called when the user is deciding the target for a new minion. 
