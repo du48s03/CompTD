@@ -11,6 +11,7 @@ public class SpawnFocus : Focusable {
 		if (menu != null)
 			return;
 		menu = Instantiate (menuPrefab);
+		menu.GetComponent<SpawnMenu> ().setSpawnPoint (gameObject);
 		HintBubble billBoard = menu.GetComponent<HintBubble> ();
 		billBoard.owner = this.gameObject;
 		billBoard.camera = Camera.main;

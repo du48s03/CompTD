@@ -1,16 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Player : MonoBehaviour {
 
-	private Focusable focus;
+	private GameObject focus;
 	private Vector3 startPosition;
+	private bool targetSelecting = false;
+	public delegate void callbackSelectTarget (GameObject target);
 
 	void OnStart(){
 		Debug.Log ("Start");
 	}
 
 	void Update(){
+		if (targetSelecting)
+			return;
 		if (Input.GetMouseButtonDown (0)) {
 			startPosition = Input.mousePosition;
 		}
@@ -22,18 +27,51 @@ public class Player : MonoBehaviour {
 				if (!hasHit|| hit.transform.GetComponent<Focusable> () == null) {
 					setFocus (null);
 				} else {
-					setFocus (hit.transform.GetComponent<Focusable>());
+					setFocus (hit.transform.gameObject);
 				}
 			}
 			//startPosition = null;
 		}
 	}
 
-	private void setFocus(Focusable target){
+	private void setFocus(GameObject target){
 		if(focus != null)
-			focus.OnLoseFocus(this);
+			focus.GetComponent<Focusable>().OnLoseFocus(this);
 		focus = target;
 		if(focus != null)
-			target.OnGainFocus(this);
+			target.GetComponent<Focusable>().OnGainFocus(this);
+	}
+
+	public IEnumerator SelectTarget(callbackSelectTarget callback){
+		targetSelecting = true;
+		Vector3 startPosition = Vector3.back;
+		GameObject prev_focus = focus;
+		setFocus (null);
+		Debug.Log ("Start Selecting Target");
+		while (true) {
+			Debug.Log ("Selecting target....");
+			if (Input.GetMouseButtonDown (0)) {
+				startPosition = Input.mousePosition;
+				yield return null;
+			}
+			if (Input.GetMouseButtonUp (0)) {
+				Vector3 endPosition = Input.mousePosition;
+				if (endPosition == startPosition) {
+					RaycastHit hit;
+					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit)) {
+						GameObject target = hit.transform.gameObject;
+						if (target.GetComponent<Targetable> () && target.GetComponent<Targetable> ().IsTargetable ()) {
+							Debug.Log ("Selected legal target");
+							targetSelecting = false;
+							callback (target);
+							setFocus (prev_focus);
+							break;
+						}
+					}
+				}
+			}
+			yield return null;
+		}
+		Debug.Log ("Leaving selecting target");
 	}
 }
