@@ -14,8 +14,9 @@ public class SpawnPoint : MonoBehaviour {
 	}
 
 	public void receiveTarget(GameObject target){
-		GameObject newMinion = Instantiate (prefab);
+		GameObject newMinion = Instantiate (prefab, transform.position, Quaternion.identity) as GameObject;
 		Debug.Log ("received target" + target.transform.position.ToString ());
+		newMinion.GetComponent<NavMeshAgent> ().SetDestination (target.transform.position);
 		RegisterMinion (newMinion);
 
 	}
