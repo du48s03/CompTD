@@ -38,6 +38,22 @@ Base:
 
 
 Building:
+Turret:
+1. if there is an enemy minion in the range, and if the turret currently has a charge, then fires an arrow at the minion closest to the base. 
+
+Mud turret:
+1. if there is an enemy minion in the range, and if the turret currently has a charge, then fires a mud ball at the minion closest to the base. 
+
+Bomb turret:
+1. if there is an enemy minion in the range, and if the turret currently has a charge, then throws a bomb at the minion closest to the base. 
+
+Healing tower:
+1. constantly heals the friendly minions in the range. 
+
+Barrack:
+1. When it is spawned, instantiates a spawn point at each path in its range (if there is no spawn point on it already). 
+
+
 different buildings do different things. These will be defined in the future. 
 
 

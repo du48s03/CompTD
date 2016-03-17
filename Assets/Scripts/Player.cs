@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.Networking;
 
-public class Player : MonoBehaviour {
+public class Player : NetworkBehaviour {
 
 	private GameObject focus;
 	private Vector3 startPosition;
 	private bool targetSelecting = false;
 	public delegate void callbackSelectTarget (GameObject target);
-
-	void OnStart(){
-		Debug.Log ("Start");
-	}
+	public GameObject spawnPointPrefab;
 
 	void Update(){
+		if (!isLocalPlayer)
+			return;
 		if (targetSelecting)
 			return;
+		transform.position += new Vector3 (Input.GetAxisRaw ("Horizontal"), 0f, Input.GetAxisRaw ("Vertical")) * 0.2f;
+		if (Input.GetKeyDown (KeyCode.Space))
+			GetComponent<PlayerNetworkHandler>().CmdSpawnWithAuthority(spawnPointPrefab.name, transform.position, Quaternion.identity);		
 		if (Input.GetMouseButtonDown (0)) {
 			startPosition = Input.mousePosition;
 		}
@@ -30,7 +33,6 @@ public class Player : MonoBehaviour {
 					setFocus (hit.transform.gameObject);
 				}
 			}
-			//startPosition = null;
 		}
 	}
 
@@ -47,9 +49,9 @@ public class Player : MonoBehaviour {
 		Vector3 startPosition = Vector3.back;
 		GameObject prev_focus = focus;
 		setFocus (null);
-		Debug.Log ("Start Selecting Target");
+		//Debug.Log ("Start Selecting Target");
 		while (true) {
-			Debug.Log ("Selecting target....");
+			//Debug.Log ("Selecting target....");
 			if (Input.GetMouseButtonDown (0)) {
 				startPosition = Input.mousePosition;
 				yield return null;
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour {
 					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit)) {
 						GameObject target = hit.transform.gameObject;
 						if (target.GetComponent<Targetable> () && target.GetComponent<Targetable> ().IsTargetable ()) {
-							Debug.Log ("Selected legal target");
+							//Debug.Log ("Selected legal target");
 							targetSelecting = false;
 							callback (target);
 							setFocus (prev_focus);
@@ -72,6 +74,6 @@ public class Player : MonoBehaviour {
 			}
 			yield return null;
 		}
-		Debug.Log ("Leaving selecting target");
+		//Debug.Log ("Leaving selecting target");
 	}
 }
