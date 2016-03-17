@@ -62,7 +62,7 @@ public class Player : NetworkBehaviour {
 					RaycastHit hit;
 					if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit)) {
 						GameObject target = hit.transform.gameObject;
-						if (target.GetComponent<Targetable> () && target.GetComponent<Targetable> ().IsTargetable ()) {
+						if (target.GetComponent<Targetable> () && target.GetComponent<Targetable> ().IsTargetable (gameObject)) {
 							//Debug.Log ("Selected legal target");
 							targetSelecting = false;
 							callback (target);
