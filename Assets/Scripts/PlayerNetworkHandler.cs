@@ -50,16 +50,25 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdSpawnMinion(NetworkInstanceId spawnPointId, NetworkInstanceId targetId, GameObject minionPrefab){
+	public void CmdSetMinionDestination(NetworkInstanceId minionId, Vector3 destination){
+		GameObject minion = NetworkServer.FindLocalObject (minionId);
+		minion.GetComponent<NavMeshAgent> ().SetDestination (destination);
+	}
+
+	[Command]
+	public void CmdSpawnMinion(NetworkInstanceId spawnPointId, NetworkInstanceId targetId, string minionName){
 		GameObject spawnPoint = NetworkServer.FindLocalObject(spawnPointId);
-		GameObject newMinion = Instantiate (minionPrefab, spawnPoint.transform.position, Quaternion.identity) as GameObject;
+		GameObject newMinion = Instantiate (spawnPrefabs[minionName], spawnPoint.transform.position, Quaternion.identity) as GameObject;
 		GameObject target = NetworkServer.FindLocalObject (targetId);
 		newMinion.GetComponent<NavMeshAgent> ().SetDestination(target.transform.position);
+		spawnPoint.GetComponent<SpawnPoint> ().RegisterMinion (newMinion);
+		newMinion.GetComponent<Minion> ().owner = spawnPoint.GetComponent<SpawnPoint> ().owner;
 		//TODO set owner
 
 		NetworkServer.SpawnWithClientAuthority (newMinion, connectionToClient);
 
 		//spawnPoint.RegisterMinion (newMinion);
 	}
+
 		
 }

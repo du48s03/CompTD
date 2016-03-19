@@ -8,6 +8,7 @@ public class SpawnPoint : NetworkBehaviour {
 	public Player owner;
 
 	private GameObject prefab;
+	private GameObject target;
 
 	[SyncVar]
 	private ArrayList minions = new ArrayList();
@@ -31,6 +32,7 @@ public class SpawnPoint : NetworkBehaviour {
 		Player[] players = FindObjectsOfType<Player> ();
 		for (int i = 0; i < players.Length; i++) {
 			if (players [i].isLocalPlayer) {
+				//Debug.Log ("Spawn Point found owner");
 				owner = players [i];
 				break;
 			}
@@ -44,6 +46,8 @@ public class SpawnPoint : NetworkBehaviour {
 
 	public void receiveTarget(GameObject target){
 		Debug.Log ("Client calling CmdSpawnWithAuthority");
+		/*
+		this.target = target;
 		owner.GetComponent<PlayerNetworkHandler> ().CmdSpawnWithAuthorityCallback (
 			prefab.name,
 			transform.position,
@@ -51,22 +55,24 @@ public class SpawnPoint : NetworkBehaviour {
 			netId,
 			"RpcSpawnCallback"
 		);
-		/*
+		*/
+
 		owner.GetComponent<PlayerNetworkHandler> ().CmdSpawnMinion (
 			GetComponent<NetworkIdentity> ().netId, 
 			target.GetComponent<NetworkIdentity> ().netId, 
-			prefab);
-		*/
+			prefab.name);
+		
 	}
 
+	//Obsolete
+	/*
 	[ClientCallback]
 	public void RpcSpawnCallback(NetworkInstanceId newMinion){
+		owner.GetComponent<PlayerNetworkHandler> ().CmdSetMinionDestination (newMinion, target.transform.position);
 		Debug.Log ("new minion spawned: " + newMinion.ToString ());
 	}
-		
+	*/	
 	public void RegisterMinion(GameObject newMinion){
-		if (!isServer)
-			return;
 		minions.Add (newMinion);
 		Debug.Log ("Server: A minion is registered");
 	}

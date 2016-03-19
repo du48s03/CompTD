@@ -5,7 +5,9 @@ using System.Collections;
 
 public class Minion : NetworkBehaviour {
 
-	private Player owner;
+	public Player owner;
+
+
 
 	//TODO: the ownership is not set on the server side. 
 	public override void OnStartAuthority ()
@@ -13,6 +15,7 @@ public class Minion : NetworkBehaviour {
 		base.OnStartAuthority ();
 		GetComponent<MeshRenderer> ().material.color = Color.red;
 		//System.Collections.ArrayList players = ClientScene.localPlayers;
+		/*
 		PlayerNetworkHandler[] players = FindObjectsOfType<PlayerNetworkHandler> ();
 		for (int i = 0; i < players.Length; i++) {
 			//PlayerNetworkHandler player = (GameObject)players[i]
@@ -22,6 +25,7 @@ public class Minion : NetworkBehaviour {
 				break;
 			}
 		}
-		Debug.Log (" Minion ownership set to " + owner.GetComponent<NetworkIdentity> ().netId.ToString ());
+		*/
+		//Debug.Log (" Minion ownership set to " + owner.GetComponent<NetworkIdentity> ().netId.ToString ());
 	}
 }

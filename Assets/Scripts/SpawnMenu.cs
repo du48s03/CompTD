@@ -9,5 +9,6 @@ public class SpawnMenu : MonoBehaviour {
 		foreach (SpawnButton child in transform.GetComponentsInChildren<SpawnButton>()) {
 			child.spawnPoint = sp;
 		}
+
 	}
 }
