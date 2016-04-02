@@ -9,7 +9,7 @@ public class HintBubble : MonoBehaviour {
 	public float distanceToCamera = 10;
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void LateUpdate () {
 		//Vector3 cameraloc = camera.transform.position;
 		transform.LookAt (transform.position  + camera.transform.rotation*Vector3.forward
 						, camera.transform.rotation * Vector3.up);
