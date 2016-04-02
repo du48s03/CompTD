@@ -26,7 +26,7 @@ public class Minion : NetworkBehaviour {
 	void OnTriggerEnter(Collider col){
 		if (!isServer || !col)
 			return;
-		if (col.gameObject.GetComponent<BuildPoint> ()) {
+		if (col.gameObject.GetComponent<BuildPoint> () && !col.gameObject.GetComponent<BuildPoint>().owner) {
 			Debug.Log ("Detect build point");
 			col.gameObject.GetComponent<BuildPoint> ().Score (owner);
 			Destroy (gameObject);

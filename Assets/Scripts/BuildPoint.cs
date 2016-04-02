@@ -4,9 +4,8 @@ using System.Collections;
 
 public class BuildPoint : NetworkBehaviour {
 
-	public GameObject owner = null;
+	public Player owner = null;
 	public int GoalAffinity = 3;
-	[SyncVar]
 	private int affinity = 0;
 	//The affinity is positive if the host player has more controll over the point. 
 
@@ -21,11 +20,12 @@ public class BuildPoint : NetworkBehaviour {
 		if (affinity == GoalAffinity || affinity == -GoalAffinity) {
 			SetOwner (player);
 		}
+		RpcSetAffinity (affinity);
 		//Debug.Log ("Player Score!: affinity = " + affinity.ToString ());
 	}
 
 	public void SetOwner(Player player){
-		owner = player.gameObject;
+		owner = player;
 		RpcSetOwner (player.GetComponent<NetworkIdentity> ().netId);
 		//Debug.Log ("Player has controlled the build point!");
 	}
@@ -33,17 +33,32 @@ public class BuildPoint : NetworkBehaviour {
 	[ClientRpc]
 	void RpcSetAffinity(int aff){
 		affinity = aff;
-		Material ringMaterial = transform.FindChild ("Outer Ring").GetComponent<Material> ();
+		int isHost = isServer ? 1 : -1;
+		Color color = new Color(1f, 1f, 1f, 1f);
+		if (affinity * isHost <= 0) {
+			color.r = 1f;
+			color.b = 1f + (float)isHost * (float)affinity / (float)GoalAffinity;
+			color.g = 1f + (float)isHost * (float)affinity / (float)GoalAffinity;
+		}
+		if (affinity * isHost >= 0) {
+			color.b = 1f;
+			color.r = 1f - (float)isHost * (float)affinity / (float)GoalAffinity;
+			color.g = 1f - (float)isHost * (float)affinity / (float)GoalAffinity;
+		}
+		Debug.Log ("affinity on the client side set to " + affinity.ToString ());
+		Debug.Log (color.ToString ());
+		transform.FindChild ("OuterRing").GetComponent<MeshRenderer> ().material.color = color;
 	}
 
 	[ClientRpc]
 	void RpcSetOwner(NetworkInstanceId playerID){
 		foreach (Player player in FindObjectsOfType<Player>()) {
-			if (player.isLocalPlayer) {
-				if (playerID == player.GetComponent<NetworkIdentity> ().netId) {
-					//Debug.Log ("You have controlled the build point!");
+			if (player.GetComponent<NetworkIdentity> ().netId == playerID) {
+				owner = player;
+				if (player.isLocalPlayer) {
+					//TODO: display a sound effect maybe?
 				} else {
-					//Debug.Log ("The enemy has controlled the build point!");
+					//TODO: display a sound effect maybe?
 				}
 			}
 		}
