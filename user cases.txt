@@ -1,19 +1,21 @@
 User cases:
 
 Map:
-1. When the user drags the map, the camera should move accordingly
-2. if the player touches the map without dragging, the focus is set to null
+V1. When the user drags the map, the camera should move accordingly
+1.1 the camera can not move off the screen
+V2. if the player touches the map without dragging, the focus is set to null
 
 Spawn Point:
-1. spawn point is only shown to its owner. 
-2. when the user touches the spawn point, his focus should be changed to it
-3. when it gains the focus, a menu should show up. 
-4. when the spawn point loses the player's focus, the menu should disappear. 
+V1. spawn point is only shown to its owner. 
+V2. when the user touches the spawn point, his focus should be changed to it
+V3. when it gains the focus, a menu should show up. 
+V4. when the spawn point loses the player's focus, the menu should disappear. 
 
 
 Spawn Menu:
-1. when the user touches one of the buttons, it should enter the "target selection mode": when touching an empty building point or the enemy base, a minion of the chosen type is spawned with the chosen target, then the spawning point loses focus. 
-2. when the user touches the cancel button, the spawn point loses focus. 
+V1. when the user touches one of the buttons, it should enter the "target selection mode": when touching an empty building point or the enemy base, a minion of the chosen type is spawned with the chosen target, then the spawning point loses focus. 
+V2. when the user touches the cancel button, the spawn point loses focus. 
+3. Should be destroyed when the spawn point is destroyed
 
 building point:
 1. when the user touches a building point, the player's focus should be changed to it. 

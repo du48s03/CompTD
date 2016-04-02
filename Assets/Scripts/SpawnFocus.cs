@@ -15,7 +15,7 @@ public class SpawnFocus : Focusable {
 		HintBubble billBoard = menu.GetComponent<HintBubble> ();
 		billBoard.owner = this.gameObject;
 		billBoard.camera = Camera.main;
-		Debug.Log ("Show menu");
+		//Debug.Log ("Show menu");
 	}
 
 	public override void OnLoseFocus(Player gameManager){
@@ -23,6 +23,6 @@ public class SpawnFocus : Focusable {
 			return;
 		Destroy (menu);
 		menu = null;
-		Debug.Log ("Hide menu");
+		//Debug.Log ("Hide menu");
 	}
 }

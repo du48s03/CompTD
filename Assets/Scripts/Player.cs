@@ -18,7 +18,8 @@ public class Player : NetworkBehaviour {
 			return;
 		transform.position += new Vector3 (Input.GetAxisRaw ("Horizontal"), 0f, Input.GetAxisRaw ("Vertical")) * 0.2f;
 		if (Input.GetKeyDown (KeyCode.Space))
-			GetComponent<PlayerNetworkHandler>().CmdSpawnWithAuthority(spawnPointPrefab.name, transform.position, Quaternion.identity);		
+			//GetComponent<PlayerNetworkHandler>().CmdSpawnWithAuthority(spawnPointPrefab.name, transform.position, Quaternion.identity);		
+			GetComponent<PlayerNetworkHandler>().CmdSpawnSpawnPoint(transform.position, Quaternion.identity, GetComponent<NetworkIdentity>().netId);
 		if (Input.GetMouseButtonDown (0)) {
 			startPosition = Input.mousePosition;
 		}
