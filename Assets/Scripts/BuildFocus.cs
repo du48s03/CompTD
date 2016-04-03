@@ -5,13 +5,18 @@ public class BuildFocus : Focusable {
 
 	public GameObject menuPrefab;
 	private GameObject menu;
+	private BuildPoint buildPoint;
+
+	void Start(){
+		buildPoint = GetComponent<BuildPoint> ();
+	}
 
 	public override void OnGainFocus (Player gameManager)
 	{
 		//TODO: show the affinity of the point
 		if (menu)
 			return;
-		if (GetComponent<BuildPoint> ().ownedByLocalPlayer ()) {
+		if (buildPoint.ownedByLocalPlayer () && !buildPoint.hasBuilding) {
 			menu = BuildMenu.Instantiate (menuPrefab, gameObject.transform.position, Quaternion.identity, gameObject);
 		}
 	}

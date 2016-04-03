@@ -8,8 +8,9 @@ public class BuildPoint : NetworkBehaviour {
 	public Player owner = null;
 	public int GoalAffinity = 3;
 	private int affinity = 0;
+	[SyncVar] public uint building;
+	[SyncVar] public bool hasBuilding;
 	//The affinity is positive if the host player has more controll over the point. 
-
 
 	public void Score(Player player){
 		if (!isServer)

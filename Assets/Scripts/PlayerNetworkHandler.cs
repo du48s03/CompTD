@@ -95,6 +95,8 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 		Player owner = buildPoint.GetComponent<BuildPoint> ().owner;
 		Debug.Log ("server: owner id = " + owner.netId);
 		GameObject newTower = Tower.Instantiate (spawnPrefabs [towerName], buildPoint.transform.position, Quaternion.identity, owner.netId);
+		buildPoint.GetComponent<BuildPoint> ().building = newTower.GetComponent<Tower> ().netId.Value;
+		buildPoint.GetComponent<BuildPoint> ().hasBuilding = true;
 
 		NetworkServer.SpawnWithClientAuthority (newTower, owner.gameObject);
 	}
