@@ -18,13 +18,13 @@ V2. when the user touches the cancel button, the spawn point loses focus.
 3. Should be destroyed when the spawn point is destroyed
 
 building point:
-1. when the user touches a building point, the player's focus should be changed to it. 
-2. when the building point gains focus, if it is controlled by the player, a menu should show up. 
-3. when the building point loses focus, the menu is hidden. 
+V1. when the user touches a building point, the player's focus should be changed to it. 
+V2. when the building point gains focus, if it is controlled by the player, a menu should show up. 
+V3. when the building point loses focus, the menu is hidden. 
 4. if the player's focus is on a building point, it should show its stats(the influence)
 
 Building Point Menu:
-1. when the player touches one of the buttons, a building of the the chosen type is spawned at the point, and the building point loses focus. 
+V1. when the player touches one of the buttons, a building of the the chosen type is spawned at the point, and the building point loses focus. 
 2. when the player touches the cancel button, the buliding point loses focus. 
 
 Minions:

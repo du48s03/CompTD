@@ -29,8 +29,8 @@ public class CameraDrag : MonoBehaviour
 
 		if (dragging) {
 			//Vector3 pos = mainCam.ScreenToViewportPoint (Input.mousePosition );
-			transform.position = camOrigin;
 			Vector3 dragEnd = new Vector3();
+			transform.position = camOrigin;
 			RaycastHit[] hits = Physics.RaycastAll(Camera.main.ScreenPointToRay (Input.mousePosition));
 			for (int i = 0; i < hits.Length; i++) {
 				if (hits [i].transform.gameObject.tag == "base")

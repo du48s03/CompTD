@@ -6,11 +6,13 @@ using System.Collections;
 public class Minion : NetworkBehaviour {
 
 	public Player owner; 
+	[SyncVar] private uint targetId;
 
 
-	public static GameObject Instantiate(Object original, Vector3 position, Quaternion quaternion, Player owner){
+	public static GameObject Instantiate(Object original, Vector3 position, Quaternion quaternion, Player owner, uint targetId){
 		GameObject newMinion = Instantiate (original, position, quaternion) as GameObject;
 		newMinion.GetComponent<Minion> ().owner = owner;
+		newMinion.GetComponent<Minion>().targetId = targetId;
 		return newMinion;
 	}
 	//this should only be called on the server side, with the spawnable prefab object ;
@@ -33,10 +35,9 @@ public class Minion : NetworkBehaviour {
 	void OnTriggerEnter(Collider col){
 		if (!isServer || !col)
 			return;
-		if (col.gameObject.GetComponent<BuildPoint> () && !col.gameObject.GetComponent<BuildPoint>().owner) {
-			Debug.Log ("Detect build point");
-			col.gameObject.GetComponent<BuildPoint> ().Score (owner);
-			Destroy (gameObject);
+		if (col.gameObject.GetComponent<BuildPoint> () && col.gameObject.GetComponent<NetworkIdentity>().netId.Value == targetId) {
+				col.gameObject.GetComponent<BuildPoint> ().Score (owner);
+				Destroy (gameObject);
 		}
 	}
 }
