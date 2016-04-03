@@ -30,7 +30,7 @@ Building Point Menu:
 Minions:
 1. when the player touches a minion, it gains focus. 
 2. if the player's focus is on a minion, it should show its stats(HP)
-3. when a minion enters an uncontrolled building point, decrease the enemy influence on it by 1 or increase the influence of the owner of the minion by one if the building point has not enemy influence on it 
+V3. when a minion enters an uncontrolled building point, decrease the enemy influence on it by 1 or increase the influence of the owner of the minion by one if the building point has not enemy influence on it 
 4. when a minion enters the enemy base, decrease the enemy base life by 1. 
 5. when a minion's life goes to 0, it is destroyed, but will be respawned at it's spawning point after a certain amount of time. 
 

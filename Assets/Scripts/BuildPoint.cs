@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityTest;
 
 public class BuildPoint : NetworkBehaviour {
 
@@ -28,6 +29,11 @@ public class BuildPoint : NetworkBehaviour {
 		owner = player;
 		RpcSetOwner (player.GetComponent<NetworkIdentity> ().netId);
 		//Debug.Log ("Player has controlled the build point!");
+	}
+
+	public bool ownedByLocalPlayer(){
+		Player localPlayer = Player.GetLocalPlayer();
+		return (owner && owner == localPlayer);
 	}
 
 	[ClientRpc]
@@ -63,4 +69,6 @@ public class BuildPoint : NetworkBehaviour {
 			}
 		}
 	}
+
+
 }

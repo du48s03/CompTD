@@ -11,6 +11,22 @@ public class Player : NetworkBehaviour {
 	public delegate void callbackSelectTarget (GameObject target);
 	public GameObject spawnPointPrefab;
 
+	public static Player GetLocalPlayer(){
+		foreach (Player player in FindObjectsOfType<Player>()) {
+			if (player.isLocalPlayer)
+				return player;
+		}
+		return null;
+	}
+
+	public static Player GetPlayerWithNetID(NetworkInstanceId netID){
+		foreach (Player player in FindObjectOfType<Player>()) {
+			if (player.GetComponent<NetworkIdentity> ().netId == netID)
+				return player;
+		}
+		return null;
+	}
+
 	void Update(){
 		if (!isLocalPlayer)
 			return;

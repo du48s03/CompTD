@@ -30,12 +30,8 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 	[Command]
 	public void CmdSpawnSpawnPoint(Vector3 position, Quaternion quaternion, NetworkInstanceId netId){
 		GameObject newPoint = Instantiate(spawnPrefabs["Spawn Point"], position, quaternion) as GameObject;
-		foreach(Player player in FindObjectsOfType<Player>()){
-			if(player.GetComponent<NetworkIdentity>().netId == netId){
-				newPoint.GetComponent<SpawnPoint>().owner = player;
-				Debug.Log ("owner = " + player.ToString ());
-			}
-		}
+		Player owner = Player.GetPlayerWithNetID (netId);
+		newPoint.GetComponent<SpawnPoint> ().owner = Player;
 
 		NetworkServer.SpawnWithClientAuthority (newPoint, connectionToClient);
 
