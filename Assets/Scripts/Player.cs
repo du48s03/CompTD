@@ -19,9 +19,9 @@ public class Player : NetworkBehaviour {
 		return null;
 	}
 
-	public static Player GetPlayerWithNetID(NetworkInstanceId netID){
+	public static Player GetPlayerWithNetID(uint netIdValue){
 		foreach (Player player in FindObjectsOfType<Player>()) {
-			if (player.GetComponent<NetworkIdentity> ().netId == netID)
+			if (player.netId.Value == netIdValue)
 				return player;
 		}
 		return null;
@@ -44,7 +44,7 @@ public class Player : NetworkBehaviour {
 			if (startPosition == endPosition) {
 				RaycastHit hit;
 				bool hasHit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hit);
-				if (!hasHit|| hit.transform.GetComponent<Focusable> () == null) {
+				if (!hasHit || !hit.transform.GetComponent<Focusable> ()) {
 					setFocus (null);
 				} else {
 					setFocus (hit.transform.gameObject);

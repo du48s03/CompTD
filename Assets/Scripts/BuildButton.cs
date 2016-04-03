@@ -3,12 +3,12 @@ using System.Collections;
 
 public class BuildButton : MonoBehaviour {
 
-	public GameObject BuildPoint;
+	public GameObject buildPoint;
 	public GameObject buildingPrefab;
 
 	public void OnClick(){
-		//TODO: do stuff;
-		Debug.Log("build me a building !");
+		BuildPoint buildPointController = buildPoint.GetComponent<BuildPoint> ();
+		buildPointController.owner.GetComponent<PlayerNetworkHandler> ().CmdSpawnTower (buildPointController.netId, buildingPrefab.name);
 	}
 
 }

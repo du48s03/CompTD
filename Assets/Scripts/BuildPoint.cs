@@ -36,6 +36,8 @@ public class BuildPoint : NetworkBehaviour {
 		return (owner && owner == localPlayer);
 	}
 
+
+
 	[ClientRpc]
 	void RpcSetAffinity(int aff){
 		affinity = aff;

@@ -30,7 +30,7 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 	[Command]
 	public void CmdSpawnSpawnPoint(Vector3 position, Quaternion quaternion, NetworkInstanceId netId){
 		//GameObject newPoint = Instantiate(spawnPrefabs["Spawn Point"], position, quaternion) as GameObject;
-		Player owner = Player.GetPlayerWithNetID (netId);
+		Player owner = Player.GetPlayerWithNetID (netId.Value);
 		GameObject newSpawnPoint = SpawnPoint.Instantiate(spawnPrefabs["Spawn Point"], position, quaternion, owner);
 		//newPoint.GetComponent<SpawnPoint> ().owner = owner;
 
@@ -86,6 +86,17 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 		NetworkServer.SpawnWithClientAuthority (newMinion, connectionToClient);
 
 		//spawnPoint.RegisterMinion (newMinion);
+	}
+
+
+	[Command]
+	public void CmdSpawnTower(NetworkInstanceId buildPointId, string towerName){
+		GameObject buildPoint = NetworkServer.FindLocalObject (buildPointId);
+		Player owner = buildPoint.GetComponent<BuildPoint> ().owner;
+		Debug.Log ("server: owner id = " + owner.netId);
+		GameObject newTower = Tower.Instantiate (spawnPrefabs [towerName], buildPoint.transform.position, Quaternion.identity, owner.netId);
+
+		NetworkServer.SpawnWithClientAuthority (newTower, owner.gameObject);
 	}
 
 		

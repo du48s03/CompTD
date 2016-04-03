@@ -11,7 +11,7 @@ public class BuildMenu : MonoBehaviour {
 		menu.GetComponent<HintBubble> ().camera = Camera.main;
 		menu.GetComponent<BuildMenu> ().buildPoint = buildPoint;
 		foreach (BuildButton button in menu.GetComponentsInChildren<BuildButton>()) {
-			button.BuildPoint = buildPoint;
+			button.buildPoint = buildPoint;
 		}
 		return menu;
 	}
