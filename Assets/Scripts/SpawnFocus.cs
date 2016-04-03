@@ -10,11 +10,14 @@ public class SpawnFocus : Focusable {
 	public override void OnGainFocus(Player gameManager){
 		if (menu != null)
 			return;
+		menu = SpawnMenu.Instantiate (menuPrefab, gameObject.transform.position, Quaternion.identity, gameObject);
+		/*
 		menu = Instantiate (menuPrefab);
 		menu.GetComponent<SpawnMenu> ().setSpawnPoint (gameObject);
 		HintBubble billBoard = menu.GetComponent<HintBubble> ();
 		billBoard.owner = this.gameObject;
 		billBoard.camera = Camera.main;
+		*/
 		//Debug.Log ("Show menu");
 	}
 

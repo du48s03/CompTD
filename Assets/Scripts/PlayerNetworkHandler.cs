@@ -29,11 +29,12 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 
 	[Command]
 	public void CmdSpawnSpawnPoint(Vector3 position, Quaternion quaternion, NetworkInstanceId netId){
-		GameObject newPoint = Instantiate(spawnPrefabs["Spawn Point"], position, quaternion) as GameObject;
+		//GameObject newPoint = Instantiate(spawnPrefabs["Spawn Point"], position, quaternion) as GameObject;
 		Player owner = Player.GetPlayerWithNetID (netId);
-		newPoint.GetComponent<SpawnPoint> ().owner = Player;
+		GameObject newSpawnPoint = SpawnPoint.Instantiate(spawnPrefabs["Spawn Point"], position, quaternion, owner);
+		//newPoint.GetComponent<SpawnPoint> ().owner = owner;
 
-		NetworkServer.SpawnWithClientAuthority (newPoint, connectionToClient);
+		NetworkServer.SpawnWithClientAuthority (newSpawnPoint, connectionToClient);
 
 	}
 
@@ -42,22 +43,22 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 
 	[Command]
 	public void CmdSpawnWithAuthority(string prefabName , Vector3 position, Quaternion quaternion){
-		Debug.Log ("Server receives RPC from client " + connectionToClient.connectionId.ToString ());
-		Debug.Log ("prefab = " + prefabName.ToString ());
+		//Debug.Log ("Server receives command from client " + connectionToClient.connectionId.ToString ());
+		//Debug.Log ("prefab = " + prefabName.ToString ());
 
 		GameObject newObject = Instantiate (spawnPrefabs[prefabName], position, quaternion) as GameObject;
-		Debug.Log ("CP1");
+		//Debug.Log ("CP1");
 		NetworkServer.SpawnWithClientAuthority (newObject, connectionToClient);
 	}
 
 	[Command]
 	public void CmdSpawnWithAuthorityCallback(string prefabName , Vector3 position, Quaternion quaternion, NetworkInstanceId caller, string methodName){
-		Debug.Log ("Server receives RPC from client " + connectionToClient.connectionId.ToString ());
-		Debug.Log ("prefab = " + prefabName.ToString ());
+		//Debug.Log ("Server receives RPC from client " + connectionToClient.connectionId.ToString ());
+		//Debug.Log ("prefab = " + prefabName.ToString ());
 		GameObject newObject = Instantiate (spawnPrefabs[prefabName], position, quaternion) as GameObject;
-		Debug.Log ("CP1");
+		//Debug.Log ("CP1");
 		NetworkServer.SpawnWithClientAuthority (newObject, connectionToClient);
-		Debug.Log ("Server calling RPC with " + newObject.GetComponent<NetworkIdentity>().netId.ToString());
+		//Debug.Log ("Server calling RPC with " + newObject.GetComponent<NetworkIdentity>().netId.ToString());
 		NetworkServer.FindLocalObject (caller).SendMessage (methodName, newObject.GetComponent<NetworkIdentity> ().netId);
 		//cb (newObject.GetComponent<NetworkIdentity>().netId);
 	}
@@ -73,7 +74,8 @@ public class PlayerNetworkHandler : NetworkBehaviour {
 	[Command]
 	public void CmdSpawnMinion(NetworkInstanceId spawnPointId, NetworkInstanceId targetId, string minionName){
 		GameObject spawnPoint = NetworkServer.FindLocalObject(spawnPointId);
-		GameObject newMinion = spawnPrefabs [minionName].GetComponent<Minion> ().Instantiate (spawnPoint.transform.position, Quaternion.identity,spawnPoint.GetComponent<SpawnPoint> ().owner);
+		//GameObject newMinion = spawnPrefabs [minionName].GetComponent<Minion> ().Instantiate (spawnPoint.transform.position, Quaternion.identity,spawnPoint.GetComponent<SpawnPoint> ().owner);
+		GameObject newMinion = Minion.Instantiate(spawnPrefabs[minionName], spawnPoint.transform.position, Quaternion.identity, spawnPoint.GetComponent<SpawnPoint>().owner);
 		//GameObject newMinion = Instantiate (spawnPrefabs[minionName], spawnPoint.transform.position, Quaternion.identity) as GameObject;
 		//newMinion.GetComponent<Minion> ().owner = spawnPoint.GetComponent<SpawnPoint> ().owner;
 		GameObject target = NetworkServer.FindLocalObject (targetId);

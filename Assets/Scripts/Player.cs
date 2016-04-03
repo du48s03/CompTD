@@ -20,7 +20,7 @@ public class Player : NetworkBehaviour {
 	}
 
 	public static Player GetPlayerWithNetID(NetworkInstanceId netID){
-		foreach (Player player in FindObjectOfType<Player>()) {
+		foreach (Player player in FindObjectsOfType<Player>()) {
 			if (player.GetComponent<NetworkIdentity> ().netId == netID)
 				return player;
 		}

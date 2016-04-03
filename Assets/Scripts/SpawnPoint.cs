@@ -15,6 +15,13 @@ public class SpawnPoint : NetworkBehaviour {
 
 	//Will be called for all the clients
 	//hasAuthority is false for all the clients at this point
+
+	public static GameObject Instantiate(Object original, Vector3 position, Quaternion quaternion, Player owner){
+		GameObject newSpawnPoint = Instantiate (original, position, quaternion) as GameObject;
+		newSpawnPoint.GetComponent<SpawnPoint>().owner = owner;
+		return newSpawnPoint;
+	}
+
 	public override void OnStartClient ()
 	{
 		base.OnStartClient ();
